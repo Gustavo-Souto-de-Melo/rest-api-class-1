@@ -5,16 +5,19 @@ import br.com.fiap.api_rest.dto.ProdutoResponse;
 import br.com.fiap.api_rest.mapper.ProdutoMapper;
 import br.com.fiap.api_rest.model.Produto;
 import br.com.fiap.api_rest.repository.ProdutoRepository;
+import org.h2.mvstore.Page;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.awt.print.Pageable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 @Service
 public class ProdutoService {
     private final ProdutoRepository produtoRepository;
@@ -41,14 +44,14 @@ public class ProdutoService {
         return produtoMapper.produtoToResponse(produto.get());
     }
 
-    public List<ProdutoResponse> read() {
-        List<Produto> produtos = produtoRepository.findAll();
-        return produtos
-                .stream()
-                .map(produtoMapper::produtoToResponse)
-                .collect(Collectors.toList());
-    }
 
+
+    // Page, Pageable
+    public Page<ProdutoResponse> read(Pageable pageable) {
+        return produtoRepository
+                .findAll(pageable)
+                .map(produtoMapper::produtoToResponse);
+    }
     /*
     // Exemplo usando for em vez de stream
     public List<ProdutoResponse> read() {
@@ -67,5 +70,8 @@ public class ProdutoService {
 
     public void delete(UUID id) {
         produtoRepository.deleteById(id);
+    }
+
+    public org.springframework.data.domain.Page<ProdutoResponse> read(org.springframework.data.domain.Pageable pageable) {
     }
 }
