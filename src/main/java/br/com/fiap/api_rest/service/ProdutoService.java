@@ -7,6 +7,8 @@ import br.com.fiap.api_rest.model.Produto;
 import br.com.fiap.api_rest.repository.ProdutoRepository;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -21,7 +23,7 @@ public class ProdutoService {
     private final ProdutoMapper produtoMapper;
 
     @Autowired
-    public ProdutoService(ProdutoRepository produtoRepository, ProdutoMapper produtoMapper) {
+    public ProdutoService(ProdutoRepository produtoRepository, ProdutoMapper produtoMapper ) {
         this.produtoRepository = produtoRepository;
         this.produtoMapper = produtoMapper;
     }
@@ -41,12 +43,10 @@ public class ProdutoService {
         return produtoMapper.produtoToResponse(produto.get());
     }
 
-    public List<ProdutoResponse> read() {
-        List<Produto> produtos = produtoRepository.findAll();
-        return produtos
-                .stream()
-                .map(produtoMapper::produtoToResponse)
-                .collect(Collectors.toList());
+    public Page<ProdutoResponse> read(Pageable pageable) {
+        return produtoRepository
+                .findAll(pageable)
+                .map(produtoMapper::produtoToResponse);
     }
 
     /*
