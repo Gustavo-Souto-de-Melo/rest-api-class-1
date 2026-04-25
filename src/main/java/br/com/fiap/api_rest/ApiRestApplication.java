@@ -13,7 +13,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 								version = "v1",
 								description = "API com SringBoot",
 								license = @License(name = "MIT", identifier = "MIT"),
-								contact = @Contact(name = "RM558230", email = "rm558230@fiap.com.br")))
+								contact = @Contact(name = "RM558595", email = "rm558595@fiap.com.br")))
 public class ApiRestApplication {
 
 	public static void main(String[] args) {
